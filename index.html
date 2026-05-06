@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cita Empire — The Operating System for the Trades</title>
+  <meta name="description" content="We built the infrastructure for a $500 billion industry that the rest of the world forgot. One login. Every product. The complete economic layer for the trades." />
+  <meta property="og:title" content="Cita Empire — The Operating System for the Trades" />
+  <meta property="og:description" content="We built the infrastructure for a $500 billion industry that the rest of the world forgot." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #0d0d14;
+      --card: #111827;
+      --card-border: #1e293b;
+      --gold: #D4A83A;
+      --gold-light: #e8c15c;
+      --gold-dim: rgba(212,168,58,0.12);
+      --green: #22c55e;
+      --green-dim: rgba(34,197,94,0.1);
+      --white: #ffffff;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --dimmer: #64748b;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --max: 1200px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── CANVAS / PARTICLES ── */
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 2rem;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(212,168,58,0.08);
+    }
+
+    .nav-logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-logo span { color: var(--gold); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cta {
+      background: var(--gold);
+      color: #0a0a0f !important;
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 700 !important;
+      transition: background 0.2s, transform 0.15s !important;
+    }
+
+    .nav-cta:hover { background: var(--gold-light) !important; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 6rem;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 500px;
+      background: radial-gradient(ellipse at center, rgba(212,168,58,0.12) 0%, rgba(212,168,58,0.04) 40%, transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+      animation: glowPulse 6s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: var(--gold-dim);
+      border: 1px solid rgba(212,168,58,0.2);
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 2;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-eyebrow-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    h1 {
+      position: relative;
+      z-index: 2;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      max-width: 900px;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+
+    h1 .gold { color: var(--gold); }
+
+    .hero-sub {
+      position: relative;
+      z-index: 2;
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      color: var(--muted);
+      max-width: 600px;
+      margin: 1.5rem auto 0;
+      font-weight: 400;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .hero-actions {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--gold);
+      color: #0a0a0f;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.85rem 2rem;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 0 0 0 rgba(212,168,58,0.4);
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(212,168,58,0.3);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--white);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.85rem 2rem;
+      border-radius: 10px;
+      border: 1px solid var(--card-border);
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(212,168,58,0.4);
+      background: rgba(212,168,58,0.05);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      gap: 3rem;
+      margin-top: 4rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .hero-stat-value .accent { color: var(--gold); }
+
+    .hero-stat-label {
+      font-size: 0.78rem;
+      color: var(--dimmer);
+      font-weight: 500;
+      margin-top: 0.3rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .stat-divider {
+      width: 1px;
+      background: var(--card-border);
+      align-self: stretch;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 6rem 2rem;
+    }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      line-height: 1.1;
+    }
+
+    h2 .gold { color: var(--gold); }
+
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-top: 1rem;
+      max-width: 560px;
+    }
+
+    /* ── PROBLEM ── */
+    #problem {
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .problem-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .problem-quote {
+      font-size: clamp(1.25rem, 2.5vw, 1.8rem);
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+    }
+
+    .problem-quote em {
+      color: var(--gold);
+      font-style: normal;
+    }
+
+    .problem-bridge {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-top: 2rem;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── EMPIRE GRID ── */
+    #empire {
+      background: var(--bg);
+    }
+
+    .empire-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .brands-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .brand-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .brand-card:hover {
+      border-color: rgba(212,168,58,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+    }
+
+    .brand-card:hover::before { opacity: 1; }
+
+    .brand-emoji {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .brand-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.35rem;
+    }
+
+    .brand-role {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+
+    .brand-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* Connection flow */
+    .connection-flow {
+      margin-top: 3.5rem;
+      text-align: center;
+    }
+
+    .flow-label {
+      font-size: 0.8rem;
+      color: var(--dimmer);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .flow-nodes {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .flow-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .flow-node-dot {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .flow-node-name {
+      font-size: 0.7rem;
+      color: var(--dimmer);
+      font-weight: 600;
+    }
+
+    .flow-arrow {
+      color: var(--gold);
+      font-size: 1rem;
+      opacity: 0.5;
+      margin: 0 0.5rem;
+      align-self: flex-start;
+      padding-top: 0.6rem;
+    }
+
+    /* ── FLYWHEEL ── */
+    #flywheel {
+      background: var(--bg2);
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .flywheel-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .flywheel-text .section-subtitle {
+      max-width: 100%;
+    }
+
+    .flywheel-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wheel {
+      position: relative;
+      width: 340px;
+      height: 340px;
+    }
+
+    .wheel-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1.5px solid rgba(212,168,58,0.15);
+      animation: spinRing 20s linear infinite;
+    }
+
+    .wheel-ring-2 {
+      inset: 20px;
+      border-color: rgba(212,168,58,0.1);
+      animation-direction: reverse;
+      animation-duration: 30s;
+    }
+
+    @keyframes spinRing {
+      to { transform: rotate(360deg); }
+    }
+
+    .wheel-center {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: var(--gold-dim);
+      border: 2px solid rgba(212,168,58,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .wheel-center-icon { font-size: 1.8rem; }
+    .wheel-center-text {
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      margin-top: 0.15rem;
+    }
+
+    .wheel-step {
+      position: absolute;
+      width: 80px;
+      text-align: center;
+    }
+
+    .wheel-step-icon {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      margin: 0 auto 0.3rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+
+    .wheel-step-text {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      line-height: 1.2;
+    }
+
+    /* Position steps around circle */
+    .ws-1 { top: 8px; left: 50%; transform: translateX(-50%); }
+    .ws-2 { top: 50%; right: 0px; transform: translateY(-50%); }
+    .ws-3 { bottom: 8px; left: 50%; transform: translateX(-50%); }
+    .ws-4 { top: 50%; left: 0px; transform: translateY(-50%); }
+    .ws-5 { top: 20%; right: 14%; }
+    .ws-6 { bottom: 20%; left: 14%; }
+
+    /* ── OPPORTUNITY ── */
+    #opportunity {
+      background: var(--bg);
+    }
+
+    .opportunity-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .opp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .opp-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .opp-card.investors { border-top: 3px solid var(--gold); }
+    .opp-card.advertisers { border-top: 3px solid var(--green); }
+
+    .opp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.85rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+
+    .investors .opp-badge { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(212,168,58,0.2); }
+    .advertisers .opp-badge { background: var(--green-dim); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+
+    .opp-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .opp-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .opp-points li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .opp-points li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      margin-top: 2px;
+    }
+
+    .investors .opp-points li::before { background: var(--gold-dim); border: 1.5px solid rgba(212,168,58,0.4); }
+    .advertisers .opp-points li::before { background: var(--green-dim); border: 1.5px solid rgba(34,197,94,0.4); }
+
+    .opp-check {
+      font-size: 0.65rem;
+      line-height: 1;
+      margin-top: 3px;
+    }
+
+    .opp-bg-icon {
+      position: absolute;
+      bottom: -20px;
+      right: -10px;
+      font-size: 8rem;
+      opacity: 0.03;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* ── NUMBERS ── */
+    #numbers {
+      background: var(--bg2);
+      border-top: 1px solid var(--card-border);
+    }
+
+    .numbers-header { text-align: center; margin-bottom: 4rem; }
+
+    .numbers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .number-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .number-card:hover {
+      border-color: rgba(212,168,58,0.25);
+      transform: translateY(-3px);
+    }
+
+    .number-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .number-value .gold { color: var(--gold); }
+
+    .number-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    .number-sub {
+      font-size: 0.75rem;
+      color: var(--dimmer);
+      margin-top: 0.25rem;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--bg);
+      border-top: 1px solid var(--card-border);
+    }
+
+    .contact-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .contact-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      text-align: center;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card:hover {
+      border-color: rgba(212,168,58,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    .contact-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .contact-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.75rem;
+    }
+
+    .contact-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 1.75rem;
+      line-height: 1.6;
+    }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 0.8rem 1.75rem;
+      border-radius: 9px;
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .contact-btn.gold {
+      background: var(--gold);
+      color: #0a0a0f;
+    }
+
+    .contact-btn.gold:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(212,168,58,0.3);
+    }
+
+    .contact-btn.green {
+      background: var(--green);
+      color: #0a0a0f;
+    }
+
+    .contact-btn.green:hover {
+      background: #4ade80;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(34,197,94,0.3);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--card-border);
+      padding: 3rem 2rem;
+    }
+
+    .footer-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .footer-brand { max-width: 280px; }
+
+    .footer-logo {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-logo span { color: var(--gold); }
+
+    .footer-tagline {
+      font-size: 0.85rem;
+      color: var(--dimmer);
+      line-height: 1.5;
+    }
+
+    .footer-links-group h4 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--dimmer);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links-group a {
+      display: block;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links-group a:hover { color: var(--white); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .footer-copy {
+      font-size: 0.8rem;
+      color: var(--dimmer);
+    }
+
+    .footer-byline {
+      font-size: 0.8rem;
+      color: var(--dimmer);
+      font-style: italic;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .flywheel-inner { grid-template-columns: 1fr; }
+      .wheel { width: 260px; height: 260px; }
+      .opp-grid, .contact-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 1.5rem; }
+      .stat-divider { display: none; }
+      .footer-top { flex-direction: column; }
+      .ws-1, .ws-2, .ws-3, .ws-4, .ws-5, .ws-6 { display: none; }
+      .wheel-center { width: 80px; height: 80px; }
+      .wheel-center-icon { font-size: 1.4rem; }
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <span>Cita</span> Empire
+  </a>
+  <div class="nav-links">
+    <a href="#empire">The Empire</a>
+    <a href="#opportunity">Why Now</a>
+    <a href="#numbers">By the Numbers</a>
+    <a href="#contact" class="nav-cta">Get in Touch</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-glow"></div>
+
+  <div class="hero-eyebrow">
+    <div class="hero-eyebrow-dot"></div>
+    Now Talking to Strategic Partners &amp; Investors
+  </div>
+
+  <h1>The <span class="gold">Operating System</span><br>for the Trades.</h1>
+
+  <p class="hero-sub">
+    We built the infrastructure for a $500 billion industry that the rest of the world forgot.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">Partner With Us ↗</a>
+    <a href="#contact" class="btn-secondary">Investor Relations</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-value">$<span class="accent">500</span>B<span class="accent">+</span></div>
+      <div class="hero-stat-label">Total Addressable Market</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-value"><span class="accent">50</span>M<span class="accent">+</span></div>
+      <div class="hero-stat-label">Skilled Trade Workers in the US</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-value"><span class="accent">8</span></div>
+      <div class="hero-stat-label">Interconnected Products</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-value"><span class="accent">38</span><span style="font-size:1.2rem">+</span></div>
+      <div class="hero-stat-label">Service Verticals</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="container">
+    <div class="problem-inner reveal">
+      <div class="section-label">The Gap</div>
+      <p class="problem-quote">
+        "50 million skilled workers. $500 billion in annual revenue. And most of them are still quoting jobs on paper, chasing invoices by text, and losing customers they'll <em>never see again.</em>"
+      </p>
+      <p class="problem-bridge">We saw the gap. We built the bridge.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EMPIRE -->
+<section id="empire">
+  <div class="container">
+    <div class="empire-header reveal">
+      <div class="section-label">The Ecosystem</div>
+      <h2>Eight brands. <span class="gold">One empire.</span></h2>
+      <p class="section-subtitle">
+        Each product is purpose-built. Each one makes the others stronger. Together, they form an economic layer that trades workers can't leave.
+      </p>
+    </div>
+
+    <div class="brands-grid">
+      <div class="brand-card reveal">
+        <span class="brand-emoji">⚙️</span>
+        <div class="brand-role">The Engine</div>
+        <div class="brand-name">CitaPros</div>
+        <div class="brand-desc">Field service SaaS for day-to-day operations. CRM, scheduling, dispatch, invoicing, and payments — built for 38 verticals.</div>
+      </div>
+      <div class="brand-card reveal reveal-delay-1">
+        <span class="brand-emoji">🏪</span>
+        <div class="brand-role">The Marketplace</div>
+        <div class="brand-name">CitaCentral</div>
+        <div class="brand-desc">Where customers find pros, day workers find gigs, and the best operators get discovered. Two-sided network, one platform.</div>
+      </div>
+      <div class="brand-card reveal reveal-delay-2">
+        <span class="brand-emoji">📱</span>
+        <div class="brand-role">The Feed</div>
+        <div class="brand-name">CitaSocial</div>
+        <div class="brand-desc">Trade-specific social platform. Jobs posted, completed, celebrated. Content that drives discovery and builds reputation.</div>
+      </div>
+      <div class="brand-card reveal reveal-delay-3">
+        <span class="brand-emoji">🪙</span>
+        <div class="brand-role">The Currency</div>
+        <div class="brand-name">CitaCoin</div>
+        <div class="brand-desc">A loyalty ecosystem built for trades. Earn on every job. Spend across every product. The switching-cost moat that keeps operators inside the empire.</div>
+      </div>
+      <div class="brand-card reveal reveal-delay-1">
+        <span class="brand-emoji">📄</span>
+        <div class="brand-role">The Paper Trail</div>
+        <div class="brand-name">CitaDocs</div>
+        <div class="brand-desc">Digital estimates, contracts, e-signatures, and templates. Everything a trade business needs to look professional and get paid faster.</div>
+      </div>
+      <div class="brand-card reveal reveal-delay-2">
+        <span class="brand-emoji">🏗️</span>
+        <div class="brand-role">The Resource Shelf</div>
+        <div class="brand-name">CitaDepot</div>
+        <div class="brand-desc">Industry-specific guides, calculators, and tools. Free to use. Drives awareness and adoption across the entire ecosystem.</div>
+      </div>
+      <div class="brand-card reveal reveal-delay-3">
+        <span class="brand-emoji">🏥</span>
+        <div class="brand-role">The Human Side</div>
+        <div class="brand-name">CitaCares</div>
+        <div class="brand-desc">Health, dental, and vision coverage for trade workers. Benefits where there were none. Turns operators into advocates for life.</div>
+      </div>
+      <div class="brand-card reveal reveal-delay-4">
+        <span class="brand-emoji">🖥️</span>
+        <div class="brand-role">The Command Center</div>
+        <div class="brand-name">CitaHQ</div>
+        <div class="brand-desc">One login. Every product. Full visibility across your entire operation. The dashboard that ties the empire together.</div>
+      </div>
+    </div>
+
+    <div class="connection-flow reveal">
+      <div class="flow-label">How they connect</div>
+      <div class="flow-nodes">
+        <div class="flow-node">
+          <div class="flow-node-dot">⚙️</div>
+          <div class="flow-node-name">CitaPros</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="flow-node-dot">🏪</div>
+          <div class="flow-node-name">Central</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="flow-node-dot">📱</div>
+          <div class="flow-node-name">Social</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="flow-node-dot">🪙</div>
+          <div class="flow-node-name">CitaCoin</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="flow-node-dot">📄</div>
+          <div class="flow-node-name">Docs</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="flow-node-dot">🏥</div>
+          <div class="flow-node-name">Cares</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="flow-node-dot">🖥️</div>
+          <div class="flow-node-name">CitaHQ</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLYWHEEL -->
+<section id="flywheel">
+  <div class="container">
+    <div class="flywheel-inner">
+      <div class="flywheel-text reveal">
+        <div class="section-label">The Flywheel</div>
+        <h2>Every product makes<br><span class="gold">the others stronger.</span></h2>
+        <p class="section-subtitle" style="margin-top:1.25rem;">
+          Most platforms serve one moment. Cita Empire serves the entire lifecycle of a trade business — from the first job to the last invoice, and every customer relationship in between.
+        </p>
+        <p class="section-subtitle" style="margin-top:1rem; font-size:0.95rem;">
+          Operators work. They get discovered. They earn loyalty. They spend it across the ecosystem. Their business grows. And there's no reason to leave.
+        </p>
+        <div style="margin-top:2rem; display:flex; flex-wrap:wrap; gap:0.75rem;">
+          <span style="background:var(--gold-dim); color:var(--gold); font-size:0.8rem; font-weight:700; padding:0.4rem 1rem; border-radius:100px; border:1px solid rgba(212,168,58,0.2);">Network Effects</span>
+          <span style="background:var(--gold-dim); color:var(--gold); font-size:0.8rem; font-weight:700; padding:0.4rem 1rem; border-radius:100px; border:1px solid rgba(212,168,58,0.2);">Switching Costs</span>
+          <span style="background:var(--gold-dim); color:var(--gold); font-size:0.8rem; font-weight:700; padding:0.4rem 1rem; border-radius:100px; border:1px solid rgba(212,168,58,0.2);">Multi-Product Moat</span>
+          <span style="background:var(--gold-dim); color:var(--gold); font-size:0.8rem; font-weight:700; padding:0.4rem 1rem; border-radius:100px; border:1px solid rgba(212,168,58,0.2);">Loyalty Engine</span>
+        </div>
+      </div>
+
+      <div class="flywheel-visual reveal reveal-delay-2">
+        <div class="wheel">
+          <div class="wheel-ring"></div>
+          <div class="wheel-ring wheel-ring-2"></div>
+
+          <div class="wheel-center">
+            <div class="wheel-center-icon">🏗️</div>
+            <div class="wheel-center-text">Cita<br>Empire</div>
+          </div>
+
+          <div class="wheel-step ws-1">
+            <div class="wheel-step-icon">💼</div>
+            <div class="wheel-step-text">Work</div>
+          </div>
+          <div class="wheel-step ws-2">
+            <div class="wheel-step-icon">🔍</div>
+            <div class="wheel-step-text">Discover</div>
+          </div>
+          <div class="wheel-step ws-3">
+            <div class="wheel-step-icon">💰</div>
+            <div class="wheel-step-text">Earn</div>
+          </div>
+          <div class="wheel-step ws-4">
+            <div class="wheel-step-icon">🛍️</div>
+            <div class="wheel-step-text">Spend</div>
+          </div>
+          <div class="wheel-step ws-5">
+            <div class="wheel-step-icon">📈</div>
+            <div class="wheel-step-text">Grow</div>
+          </div>
+          <div class="wheel-step ws-6">
+            <div class="wheel-step-icon">🔄</div>
+            <div class="wheel-step-text">Repeat</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPORTUNITY -->
+<section id="opportunity">
+  <div class="container">
+    <div class="opportunity-header reveal">
+      <div class="section-label">The Opportunity</div>
+      <h2>Built for two audiences.<br><span class="gold">Relevant to both.</span></h2>
+    </div>
+
+    <div class="opp-grid">
+      <div class="opp-card investors reveal">
+        <div class="opp-badge">📈 For Investors</div>
+        <div class="opp-title">A category-defining opportunity in a market nobody else touched.</div>
+        <ul class="opp-points">
+          <li>
+            <div>
+              <strong style="color:var(--text)">$500B+ TAM, &lt;5% penetrated</strong> with modern software. The incumbents are generic. We're vertical-native.
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong style="color:var(--text)">Built-in network effects.</strong> Every new operator makes CitaCentral more valuable. Every CitaCoin spent deepens retention and raises the switching cost.
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong style="color:var(--text)">Multiple expansion triggers</strong> already on the roadmap: new verticals, new cities, new products, enterprise upmarket. The flywheel is already spinning.
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong style="color:var(--text)">Eight monetization streams.</strong> SaaS, marketplace take-rate, loyalty currency, benefits, and more — each product earns while making the others stickier.
+            </div>
+          </li>
+        </ul>
+        <div class="opp-bg-icon">📈</div>
+      </div>
+
+      <div class="opp-card advertisers reveal reveal-delay-2">
+        <div class="opp-badge">📣 For Advertisers & Partners</div>
+        <div class="opp-title">Reach the people building America — on the job and in the home.</div>
+        <ul class="opp-points">
+          <li>
+            <div>
+              <strong style="color:var(--text)">Dual-audience reach.</strong> Simultaneously connect with trade professionals AND the homeowners booking their services. One buy, two audiences.
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong style="color:var(--text)">High-intent audience.</strong> People actively booking, budgeting, and spending on field services. Not scroll-and-forget — action-ready.
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong style="color:var(--text)">Cross-platform reach.</strong> CitaPros users, CitaCentral visitors, CitaSocial followers. One partnership, full ecosystem exposure.
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong style="color:var(--text)">Brand placements that convert.</strong> Reach both the pro and the customer at the moment of decision — not before, not after.
+            </div>
+          </li>
+        </ul>
+        <div class="opp-bg-icon">📣</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<section id="numbers">
+  <div class="container">
+    <div class="numbers-header reveal">
+      <div class="section-label">By the Numbers</div>
+      <h2>Momentum in motion.</h2>
+      <p class="section-subtitle">
+        We're not predicting this market. We're in it. Building, shipping, and growing — every month.
+      </p>
+    </div>
+
+    <div class="numbers-grid">
+      <div class="number-card reveal">
+        <div class="number-value">$<span class="gold">500</span>B+</div>
+        <div class="number-label">Total Addressable Market</div>
+        <div class="number-sub">US field service industry</div>
+      </div>
+      <div class="number-card reveal reveal-delay-1">
+        <div class="number-value"><span class="gold">38</span>+</div>
+        <div class="number-label">Service Verticals</div>
+        <div class="number-sub">HVAC, plumbing, electrical &amp; more</div>
+      </div>
+      <div class="number-card reveal reveal-delay-2">
+        <div class="number-value"><span class="gold">8</span></div>
+        <div class="number-label">Live Products</div>
+        <div class="number-sub">One ecosystem, all connected</div>
+      </div>
+      <div class="number-card reveal reveal-delay-3">
+        <div class="number-value"><span class="gold">50</span>M+</div>
+        <div class="number-label">Skilled Trade Workers</div>
+        <div class="number-sub">In the US alone</div>
+      </div>
+      <div class="number-card reveal reveal-delay-1">
+        <div class="number-value"><span class="gold">90</span>%</div>
+        <div class="number-label">Still on Outdated Tools</div>
+        <div class="number-sub">Paper, spreadsheets, manual processes</div>
+      </div>
+      <div class="number-card reveal reveal-delay-2">
+        <div class="number-value" style="font-size:1.8rem;"><span class="gold">Monthly</span></div>
+        <div class="number-label">New City Launches</div>
+        <div class="number-sub">Expanding operator base nationwide</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-header reveal">
+      <div class="section-label">Let's Talk</div>
+      <h2>Ready to be<br><span class="gold">part of it?</span></h2>
+      <p class="section-subtitle" style="margin: 1rem auto 0; text-align:center;">
+        Whether you're looking to invest, partner, or advertise — we want to hear from you.
+      </p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-card reveal">
+        <div class="contact-icon">📊</div>
+        <h3>Investor Relations</h3>
+        <p>We're building something lasting. If you see what we see in the trades market, we'd like to talk. Serious inquiries only — we move fast.</p>
+        <a href="mailto:investors@citaempire.com?subject=Investor%20Inquiry%20—%20Cita%20Empire" class="contact-btn gold">
+          investors@citaempire.com ↗
+        </a>
+      </div>
+
+      <div class="contact-card reveal reveal-delay-2">
+        <div class="contact-icon">🤝</div>
+        <h3>Advertisers &amp; Partners</h3>
+        <p>Reach the people building America, one job at a time. Let's talk about how Cita Empire can put your brand where it matters most.</p>
+        <a href="mailto:partners@citaempire.com?subject=Partnership%20Inquiry%20—%20Cita%20Empire" class="contact-btn green">
+          partners@citaempire.com ↗
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo"><span>Cita</span> Empire</div>
+        <div class="footer-tagline">Built for the trades. Built to last.<br>The complete economic layer for America's skilled workforce.</div>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>The Empire</h4>
+        <a href="#">CitaPros</a>
+        <a href="#">CitaCentral</a>
+        <a href="#">CitaSocial</a>
+        <a href="#">CitaCoin</a>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>More Products</h4>
+        <a href="#">CitaDocs</a>
+        <a href="#">CitaDepot</a>
+        <a href="#">CitaCares</a>
+        <a href="#">CitaHQ</a>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Contact</h4>
+        <a href="mailto:investors@citaempire.com?subject=Investor%20Inquiry%20—%20Cita%20Empire">investors@citaempire.com</a>
+        <a href="mailto:partners@citaempire.com?subject=Partnership%20Inquiry%20—%20Cita%20Empire">partners@citaempire.com</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 Cita Empire LLC. All rights reserved.</div>
+      <div class="footer-byline">"Built for the trades. Built to last."</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── PARTICLE CANVAS ──
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let animFrame;
+
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 1.5 + 0.3;
+      this.speedX = (Math.random() - 0.5) * 0.3;
+      this.speedY = (Math.random() - 0.5) * 0.3 - 0.1;
+      this.opacity = Math.random() * 0.5 + 0.1;
+      this.life = 0;
+      this.maxLife = Math.random() * 300 + 150;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      this.life++;
+      if (this.life > this.maxLife || this.y < 0 || this.x < 0 || this.x > canvas.width) this.reset();
+    }
+    draw() {
+      const progress = this.life / this.maxLife;
+      const fade = progress < 0.1 ? progress / 0.1 : progress > 0.9 ? (1 - progress) / 0.1 : 1;
+      ctx.globalAlpha = this.opacity * fade;
+      ctx.fillStyle = Math.random() > 0.85 ? '#D4A83A' : '#e2e8f0';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function initParticles() {
+    particles = [];
+    const count = Math.min(Math.floor(canvas.width * canvas.height / 6000), 120);
+    for (let i = 0; i < count; i++) {
+      const p = new Particle();
+      p.life = Math.random() * p.maxLife;
+      particles.push(p);
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    ctx.globalAlpha = 1;
+    animFrame = requestAnimationFrame(animate);
+  }
+
+  resize();
+  initParticles();
+  animate();
+
+  window.addEventListener('resize', () => { resize(); initParticles(); });
+
+  // ── SCROLL REVEAL ──
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  revealEls.forEach(el => observer.observe(el));
+
+  // ── COUNTER ANIMATION ──
+  function animateCounters() {
+    document.querySelectorAll('.hero-stat-value').forEach(el => {
+      const text = el.textContent;
+      // just fade them in — values are static for accuracy
+    });
+  }
+
+  // ── NAV ACTIVE STATE ──
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(sec => {
+      if (window.scrollY >= sec.offsetTop - 100) current = sec.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? '#fff' : '';
+    });
+  }, { passive: true });
+</script>
+
+</body>
+</html>
